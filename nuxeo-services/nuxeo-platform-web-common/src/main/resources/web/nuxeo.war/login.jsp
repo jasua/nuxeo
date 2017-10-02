@@ -227,10 +227,10 @@ form > * {
 
 .login_input:hover,
 .login_input:focus {
-  border-color: #2e9cff;
+  border-color: #ffaaff;
   box-shadow: 0 0 0 50px white inset, 0 0 3px #2e9cff;
   outline: none;
-  color: #00adff;
+  color: #ff44ff;
 }
 
 input:-webkit-autofill {
@@ -240,7 +240,7 @@ input:-webkit-autofill {
 
 input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 50px white inset, 0 0 3px #2e9cff;
-  -webkit-text-fill-color: #00adff;
+  -webkit-text-fill-color: #ff55ff;
 }
 
 .login_button {
@@ -305,7 +305,7 @@ input:-webkit-autofill:focus {
   background-color: rgba(255,255,255,0.8);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border-radius: 2px;
-  color: #00adff;
+  color: #ffaa00;
   font-size: 95%;
   margin-bottom: .4em;
   padding: .5em;
@@ -341,7 +341,7 @@ input:-webkit-autofill:focus {
 a.mobileAppLink,
 a.mobileAppLink:hover {
   display: inline-block;
-  background-color: #00adff;
+  background-color: #ff44ff;
   border-radius: 3em;
   padding: .2em 1.5em .5em;
   color: #fff;
