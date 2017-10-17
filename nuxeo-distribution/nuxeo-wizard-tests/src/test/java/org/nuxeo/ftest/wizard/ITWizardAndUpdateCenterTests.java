@@ -182,17 +182,16 @@ public class ITWizardAndUpdateCenterTests extends AbstractTest {
         WizardPage packageSelectiondPage = asPage(WizardPage.class);
 
         assertNotNull(packageSelectiondPage);
-        assertEquals("Select Modules", packageSelectiondPage.getTitle());
+        assertEquals("Select Addons", packageSelectiondPage.getTitle());
 
         AbstractPage.findElementWithTimeout(By.id("pkg_nuxeo-no-ui"));
         AbstractPage.findElementWithTimeout(By.id("pkg_nuxeo-web-ui"));
-        AbstractPage.findElementWithTimeout(By.id("pkg_nuxeo-jsf-ui"));
 
         // **************************
         // Package Download Screen
         WizardPage packageDownloadPage = asPage(WizardPage.class).next();
         assertNotNull(packageDownloadPage);
-        assertEquals("Download Module(s)", packageDownloadPage.getTitle());
+        assertEquals("Download Addon(s)", packageDownloadPage.getTitle());
 
         // **********************
         // Summary screen
