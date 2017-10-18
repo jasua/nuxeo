@@ -163,6 +163,7 @@ public class JDBCMapper extends JDBCRowMapper implements Mapper {
 
     @Override
     public void createDatabase(String ddlMode) {
+        log.warn("Creating database from thread: " + Thread.currentThread().getName(), new Exception("debug"));
         // some databases (SQL Server) can't create tables/indexes/etc in a transaction, so suspend it
         try {
             if (!connection.getAutoCommit()) {
@@ -172,6 +173,7 @@ public class JDBCMapper extends JDBCRowMapper implements Mapper {
         } catch (SQLException e) {
             throw new NuxeoException(e);
         }
+        log.warn("Database creation done, thread: " + Thread.currentThread().getName());
     }
 
     protected String getTableName(String origName) {

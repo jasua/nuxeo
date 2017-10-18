@@ -104,6 +104,7 @@ public class DatabaseH2 extends DatabaseHelper {
     }
 
     protected void tearDownDatabase(String url) throws SQLException {
+        log.warn("Shutdown database from thread: " + Thread.currentThread().getName(), new Exception("debug"));
         Connection connection = DriverManager.getConnection(url, user, password);
         try {
             Statement st = connection.createStatement();
