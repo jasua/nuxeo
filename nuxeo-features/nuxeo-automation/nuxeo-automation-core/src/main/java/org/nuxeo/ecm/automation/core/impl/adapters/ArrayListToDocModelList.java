@@ -1,10 +1,10 @@
 /*
  * (C) Copyright 2017 Nuxeo (http://nuxeo.com/) and others.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -40,17 +40,13 @@ public class ArrayListToDocModelList implements TypeAdapter {
     public Object getAdaptedValue(OperationContext ctx, Object objectToAdapt) throws TypeAdaptException {
         Collection<Object> list = (Collection<Object>) objectToAdapt;
         DocumentModelList result = new DocumentModelListImpl(list.size());
-        try {
-            for (Object val : list) {
-                if(val instanceof String) {
-                    result.add(TypeAdapterHelper.createDocumentModel(ctx, (String) val));
-                }
-                else if (val instanceof DocumentRef) {
-                    result.add(TypeAdapterHelper.createDocumentModel(ctx, (DocumentRef) val));
-                }
+        for (Object val : list) {
+            if(val instanceof String) {
+                result.add(TypeAdapterHelper.createDocumentModel(ctx, (String) val));
             }
-        } catch (DocumentNotFoundException e) {
-            throw new TypeAdaptException(e);
+            else if (val instanceof DocumentRef) {
+                result.add(TypeAdapterHelper.createDocumentModel(ctx, (DocumentRef) val));
+            }
         }
         return result;
     }
