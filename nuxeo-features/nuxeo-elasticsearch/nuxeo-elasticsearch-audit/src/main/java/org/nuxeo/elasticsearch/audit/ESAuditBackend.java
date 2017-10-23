@@ -33,10 +33,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -96,7 +97,6 @@ import org.nuxeo.elasticsearch.ElasticSearchConstants;
 import org.nuxeo.elasticsearch.api.ESClient;
 import org.nuxeo.elasticsearch.api.ElasticSearchAdmin;
 import org.nuxeo.elasticsearch.audit.io.AuditEntryJSONReader;
-import org.nuxeo.elasticsearch.audit.io.AuditEntryJSONWriter;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.DefaultComponent;
 
@@ -476,9 +476,10 @@ public class ESAuditBackend extends AbstractAuditBackend implements AuditBackend
                     log.debug(String.format("Indexing log entry: %s", entry));
                 }
                 OutputStream out = new BytesStreamOutput();
-                JsonGenerator jsonGen = factory.createJsonGenerator(out);
+                JsonGenerator jsonGen = factory.createGenerator(out);
                 XContentBuilder builder = jsonBuilder(out);
-                AuditEntryJSONWriter.asJSON(jsonGen, entry);
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.writeValue(jsonGen, entry);
                 bulkRequest.add(new IndexRequest(getESIndexName(), ElasticSearchConstants.ENTRY_TYPE,
                         String.valueOf(entry.getId())).source(builder));
             }
