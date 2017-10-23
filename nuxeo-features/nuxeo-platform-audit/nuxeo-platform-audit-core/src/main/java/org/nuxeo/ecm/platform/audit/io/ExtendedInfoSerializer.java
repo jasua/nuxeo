@@ -30,9 +30,9 @@ import org.nuxeo.ecm.platform.audit.impl.ExtendedInfoImpl;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 /**
  * Serializer class for extended info to a JSON object
@@ -47,20 +47,16 @@ public class ExtendedInfoSerializer extends JsonSerializer<ExtendedInfo> {
 
         if (info instanceof ExtendedInfoImpl.DateInfo) {
             ExtendedInfoImpl.DateInfo dateInfo = (ExtendedInfoImpl.DateInfo) info;
-            Date date = dateInfo.getDateValue();
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-            jg.writeObject(dateFormatter.format(date));
+            DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendInstant(3).toFormatter();
+            Instant instant = dateInfo.getDateValue().toInstant();
+            jg.writeObject(formatter.format(instant));
         } else if (info instanceof ExtendedInfoImpl.BlobInfo) {
             Serializable value = ((ExtendedInfoImpl.BlobInfo) info).getBlobValue();
-            jg.writeObject(serializeToByteArray(value));
+            jg.writeObject(Base64.encodeBase64(SerializationUtils.serialize(value)));
         } else {
             jg.writeObject(info.getSerializableValue());
         }
 
     }
 
-    protected static byte[] serializeToByteArray(Serializable value) {
-        return Base64.encodeBase64(SerializationUtils.serialize(value));
-    }
 }
