@@ -52,8 +52,8 @@ public class TagsJsonEnricher extends AbstractJsonEnricher<DocumentModel> {
         TagService tagService = Framework.getService(TagService.class);
         jg.writeArrayFieldStart(NAME);
         try (SessionWrapper wrapper = ctx.getSession(document)) {
-            for (Tag tag : tagService.getDocumentTags(wrapper.getSession(), document.getId(), null)) {
-                jg.writeString(tag.getLabel());
+            for (String tag : tagService.getTags(wrapper.getSession(), document.getId())) {
+                jg.writeString(tag);
             }
         }
         jg.writeEndArray();

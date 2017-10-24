@@ -27,6 +27,7 @@ import static org.junit.Assume.assumeTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -156,9 +157,8 @@ public class TestBulkEditService {
 
         bulkEditService.updateDocuments(session, sourceDoc, docs);
 
-        String username = session.getPrincipal().getName();
         for (DocumentModel doc : docs) {
-            tagService.tag(session, doc.getId(), "tag", username);
+            tagService.tag(session, doc.getId(), "tag");
         }
 
         TransactionHelper.commitOrRollbackTransaction();
@@ -170,9 +170,9 @@ public class TestBulkEditService {
         assertFalse("new description".equals(doc.getPropertyValue("dc:description")));
         assertFalse("new source".equals(doc.getPropertyValue("dc:source")));
 
-        List<Tag> tags = tagService.getDocumentTags(session, doc.getId(), username);
-        assertEquals(1, tags.size());
-        assertEquals("tag", tags.get(0).getLabel());
+        String[] tags = (String[]) tagService.getTags(session, doc.getId()).toArray();
+        assertEquals(1, tags.length);
+        assertEquals("tag", tags[0]);
 
         assertEquals("0.1+", doc.getVersionLabel());
 
@@ -180,8 +180,8 @@ public class TestBulkEditService {
         assertEquals("doc1", version.getPropertyValue("dc:title"));
         assertEquals("0.1", version.getVersionLabel());
 
-        tags = tagService.getDocumentTags(session, version.getId(), username);
-        assertEquals(0, tags.size());
+        tags = (String[]) tagService.getTags(session, version.getId()).toArray();
+        assertEquals(0, tags.length);
     }
 
     @Test

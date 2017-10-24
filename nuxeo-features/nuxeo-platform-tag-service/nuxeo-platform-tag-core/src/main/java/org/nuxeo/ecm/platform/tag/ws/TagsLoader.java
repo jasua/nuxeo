@@ -18,6 +18,7 @@
  */
 package org.nuxeo.ecm.platform.tag.ws;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -42,11 +43,11 @@ public class TagsLoader implements DocumentLoader {
         if (srv == null) {
             return;
         }
-        List<Tag> tags = srv.getDocumentTags(session, doc.getId(), rs.getUsername());
+        List<String> tags = new ArrayList<>(srv.getTags(session, doc.getId()));
         String value = "";
         String sep = "";
-        for (Tag tag : tags) {
-            value = value + sep + tag.getLabel();
+        for (String tag : tags) {
+            value = value + sep + tag;
             sep = ",";
         }
         DocumentProperty prop = new DocumentProperty("tags", value);
